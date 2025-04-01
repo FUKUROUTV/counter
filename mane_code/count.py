@@ -18,6 +18,8 @@ if not cap.isOpened():
 save_folder = "./captured_images/"
 os.makedirs(save_folder, exist_ok=True)
 
+max_images = 50  # 🔹 保存する最大画像数
+
 frame_count = 0
 inside_count = 0  # 現在室内にいる人数
 entry_count = 0   # 入室した回数
@@ -32,6 +34,10 @@ frame_width = int(cap.get(3))  # 画面の幅
 frame_height = int(cap.get(4))  # 画面の高さ
 distance_threshold = 60  # 🔹 1フレーム内での移動距離の閾値
 
+def manage_saved_images():
+    images = sorted([f for f in os.listdir(save_folder) if f.endswith(".jpg")])
+    while len(images) > max_images:
+        os.remove(os.path.join(save_folder, images.pop(0)))
 
 while True:
     ret, frame = cap.read()
@@ -119,13 +125,17 @@ while True:
             if y_prev <= threshold_y < y_last:  # 上から下へ（入室）
                 # 入室時の画像保存
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
-                cv.imwrite(f"{save_folder}entry_{timestamp}.jpg", frame)
+                img_path = f"{save_folder}entry_{timestamp}.jpg"
+                cv.imwrite(img_path, frame)
+                manage_saved_images()  # 🔹 画像管理を実行
                 inside_count -= 1
                 entry_count += 1
             elif y_prev > threshold_y >= y_last:  # 下から上へ（退室）
                 # 退室時の画像保存
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
-                cv.imwrite(f"{save_folder}exit_{timestamp}.jpg", frame)
+                img_path = f"{save_folder}exit_{timestamp}.jpg"
+                cv.imwrite(img_path, frame)
+                manage_saved_images()  # 🔹 画像管理を実行
                 inside_count += 1
                 exit_count += 1
     # 🔹 軌跡を描画
