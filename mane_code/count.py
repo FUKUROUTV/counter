@@ -17,6 +17,7 @@ if not cap.isOpened():
 # 🔹 保存フォルダの作成
 save_folder = "./captured_images/"
 os.makedirs(save_folder, exist_ok=True)
+log_file_path = os.path.join(save_folder, "entry_exit_log.txt")
 
 max_images = 50  # 🔹 保存する最大画像数
 
@@ -128,6 +129,8 @@ while True:
                 img_path = f"{save_folder}entry_{timestamp}.jpg"
                 cv.imwrite(img_path, frame)
                 manage_saved_images()  # 🔹 画像管理を実行
+                with open(log_file_path, "a") as log_file:
+                    log_file.write(f"{timestamp} - Entry\n")
                 inside_count -= 1
                 entry_count += 1
             elif y_prev > threshold_y >= y_last:  # 下から上へ（退室）
@@ -136,6 +139,8 @@ while True:
                 img_path = f"{save_folder}exit_{timestamp}.jpg"
                 cv.imwrite(img_path, frame)
                 manage_saved_images()  # 🔹 画像管理を実行
+                with open(log_file_path, "a") as log_file:
+                    log_file.write(f"{timestamp} - Exit\n")
                 inside_count += 1
                 exit_count += 1
     # 🔹 軌跡を描画
