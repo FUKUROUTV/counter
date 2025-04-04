@@ -19,7 +19,7 @@ save_folder = "./captured_images/"
 os.makedirs(save_folder, exist_ok=True)
 log_file_path = os.path.join(save_folder, "entry_exit_log.txt")
 
-max_images = 50  # 🔹 保存する最大画像数
+max_images = 500  # 🔹 保存する最大画像数
 
 frame_count = 0
 inside_count = 0  # 現在室内にいる人数
