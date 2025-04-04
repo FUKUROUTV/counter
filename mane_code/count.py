@@ -2,6 +2,7 @@ import cv2 as cv
 import os
 import time
 import numpy as np
+from datetime import datetime
 
 os.environ["QT_QPA_PLATFORM"] = "xcb"  # X11用の環境変数設定
 
@@ -125,7 +126,7 @@ while True:
 
             if y_prev <= threshold_y < y_last:  # 上から下へ（入室）
                 # 入室時の画像保存
-                timestamp = time.strftime("%Y%m%d_%H%M%S")
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # ミリ秒まで（3桁）
                 img_path = f"{save_folder}entry_{timestamp}.jpg"
                 cv.imwrite(img_path, frame)
                 manage_saved_images()  # 🔹 画像管理を実行
@@ -136,7 +137,7 @@ while True:
                 print(f"Entry Count: {entry_count}, Exit Count: {exit_count}, Inside Count: {inside_count}")
             elif y_prev > threshold_y >= y_last:  # 下から上へ（退室）
                 # 退室時の画像保存
-                timestamp = time.strftime("%Y%m%d_%H%M%S")
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]  # ミリ秒まで（3桁）
                 img_path = f"{save_folder}exit_{timestamp}.jpg"
                 cv.imwrite(img_path, frame)
                 manage_saved_images()  # 🔹 画像管理を実行
@@ -165,7 +166,7 @@ while True:
     cv.imshow('Object Tracking', frame)
 
     # 🔹 0.1秒待機
-    if cv.waitKey(0) & 0xFF == ord('q'):
+    if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
 # 🔹 リソースを解放
