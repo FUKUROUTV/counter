@@ -165,7 +165,7 @@ while True:
     cv.imshow('Object Tracking', frame)
 
     # 🔹 0.1秒待機
-    if cv.waitKey(1) & 0xFF == ord('q'):
+    if 0xFF == ord('q'):
         break
 
 # 🔹 リソースを解放
