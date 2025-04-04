@@ -133,6 +133,7 @@ while True:
                     log_file.write(f"{timestamp} - Entry\n")
                 inside_count -= 1
                 entry_count += 1
+                print(f"Entry Count: {entry_count}, Exit Count: {exit_count}, Inside Count: {inside_count}")
             elif y_prev > threshold_y >= y_last:  # 下から上へ（退室）
                 # 退室時の画像保存
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
@@ -143,6 +144,7 @@ while True:
                     log_file.write(f"{timestamp} - Exit\n")
                 inside_count += 1
                 exit_count += 1
+                print(f"Entry Count: {entry_count}, Exit Count: {exit_count}, Inside Count: {inside_count}")
     # 🔹 軌跡を描画
     for obj_id, past_positions in tracking_objects.items():
         for i in range(1, len(past_positions)):
@@ -161,9 +163,6 @@ while True:
 
     # 🔹 カメラ映像を表示
     cv.imshow('Object Tracking', frame)
-
-    # デバッグ用カウント情報の出力
-    print(f"Entry Count: {entry_count}, Exit Count: {exit_count}, Inside Count: {inside_count}")
 
     # 🔹 0.1秒待機
     if cv.waitKey(1) & 0xFF == ord('q'):
