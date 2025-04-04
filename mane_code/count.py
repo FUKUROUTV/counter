@@ -53,7 +53,7 @@ while True:
     custom_rects = custom_cascade.detectMultiScale(
         gray_frame,
         scaleFactor=1.07,
-        minNeighbors=2,
+        minNeighbors=5,
         minSize=(100, 100),
         maxSize=(150, 150)
     )
